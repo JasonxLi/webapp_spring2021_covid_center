@@ -10,40 +10,39 @@
         <h1>Welcome to Covid Assessment Website.</h1>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="styles/style.css">
     </header>
     <section>
         <h2>Please fill out this form:</h2>
         <article>
-            <form>
+            <form onsubmit="return validateForm()" id="mainForm" novalidate>
                 <fieldset class="border">
                     <legend class="w-auto">Part 1: Patient Information</legend>
 
 
-                    <div class="form-row">
-                        <div class="form-group row">
-                            <div class="col-sm-1 col-md-4">
-                                <label for="txtFirstName" class="col-form-label">
-                                    <span>First name: </span>
-                                </label>
-                            </div>
-                            <div class="col-sm-9 col-md-8">
-                                <input type="text" id="txtFirstName" name="txtFirstName" required class="form-control"
-                                    placeholder="First Name">
-                            </div>
+                    <div class="form-group row">
+                        <div class="col-sm-1">
+                            <label for="txtFirstName" class="col-form-label">
+                                <span>First name: </span>
+                            </label>
+                        </div>
+                        <div class="col-sm-4 col-lg-2">
+                            <input type="text" id="txtFirstName" name="txtFirstName" required class="form-control"
+                                placeholder="First Name">
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-sm-1 col-md-4">
-                                <label for="txtLastName" class="col-form-label">
-                                    <span>Last name: </span>
-                                </label>
-                            </div>
-                            <div class="col-sm-9 col-md-8">
-                                <input type="text" id="txtLastName" name="txtLastName" required class="form-control"
-                                    placeholder="Last Name">
-                            </div>
+                        <div class="col-sm-1">
+                            <label for="txtLastName" class="col-form-label">
+                                <span>Last name: </span>
+                            </label>
+                        </div>
+                        <div class="col-sm-4 col-lg-2">
+                            <input type="text" id="txtLastName" name="txtLastName" required class="form-control"
+                                placeholder="Last Name">
                         </div>
                     </div>
+
 
                     <fieldset class="form-group">
                         <div class="row">
@@ -72,17 +71,15 @@
                         <label for="txtTel" class="col-sm-1 col-form-label">
                             <span>Telephone:</span>
                         </label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-1 col-lg-2">
                             <input type="tel" id="txtTel" name="txtTel" pattern="^[1-9]\d{2}-\d{3}-\d{4}"
                                 class="form-control" placeholder="123-456-7890">
                         </div>
-                    </div>
 
-                    <div class="row form-group">
                         <label for="txtEmail" class="col-sm-1 col-form-label">
                             <span>Email:</span>
                         </label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-3 col-lg-4">
                             <input type="email" id="txtEmail" name="txtEmail" required class="form-control"
                                 placeholder="name@example.com">
                         </div>
@@ -92,17 +89,17 @@
                         <label for="txtAddress" class="col-sm-1 col-form-label">
                             <span>Address:</span>
                         </label>
-                        <div class="col-md-12 col-lg-6 ">
+                        <div class="col-md-12 col-lg-4 ">
                             <input type="text" id="txtAddress" name="txtAddress" class="form-control"
                                 placeholder="Street">
                         </div>
-                        <div class="col">
+                        <div class="col-lg-1">
                             <input type="text" id="txtCity" name="txtCity" class="form-control" placeholder="City">
                         </div>
-                        <div class="col">
+                        <div class="col-lg-1">
                             <input type="text" id="txtState" name="txtState" class="form-control" placeholder="State">
                         </div>
-                        <div class="col">
+                        <div class="col-lg-1">
                             <input type="text" id="txtZip" name="txtZip" class="form-control" placeholder="Zip Code"
                                 pattern=[0-9]{5}>
                         </div>
@@ -112,10 +109,10 @@
                         <label for="txtDoB" class="col-sm-1 col-form-label">
                             <span>Date of Birth:</span>
                         </label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-3">
                             <input type="date" id="txtDoB" name="txtDoB" required class="form-control">
                         </div>
-
+                        <div id="divDoBError" class="invisible errorMessage"></div>
                     </div>
                 </fieldset>
                 <br>
@@ -290,25 +287,27 @@
                     <div class="row form-group">
                         <label for="ddCountry" class="col-sm-3 col-form-label">
                             <span>Have you travelled to any country in the last 14 days?</span>
-
                         </label>
                         <div>
-                            <select id="ddCountry" name="ddCountry" class="form-control">
+                            <select id="ddCountry" name="ddCountry" class="form-control" onchange="updateCountryView()">
                                 <option value="No" selected>No</option>
                                 <option value="Yes">Yes</option>
                             </select>
                         </div>
+                    </div>
 
-                        <div class="col-sm-3">
-                            <label for="txtCountry" class="col-form-label">
-                                <span>If answered yes, which countries? (seperate with comma)</span>
-                            </label>
-                        </div>
-                        <div class="col-sm-3">
+                    <div id="divCountry" class="row form-group invisible">
+                        <label for="txtCountry" class="col-sm-3 col-form-label">
+                            <span>Which countries? (seperate with comma)</span>
+                        </label>
+
+                        <div>
                             <input type="text" id="txtCountry" name="txtCountry" pattern="[^,]+" class="form-control"
                                 placeholder="Spain,China,...">
                         </div>
+                        <div id="divCountryError" class="invisible errorMessage"></div>
                     </div>
+
 
                     </div>
 
@@ -339,12 +338,15 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>
                 </p>
+                <div id="divInvalidCharError" class="invisible errorMessage">Invalid character(s) on input fields.</div>
             </form>
         </article>
     </section>
     <footer>
         copyright 2021 Covid Center Website.
     </footer>
+
+    <script src="js/script.js"></script>
 </body>
 
 </html>
